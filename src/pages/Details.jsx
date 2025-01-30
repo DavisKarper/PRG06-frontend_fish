@@ -1,44 +1,50 @@
 import { useLoaderData } from 'react-router';
 import MapWithLocation from '../components/MapWithLocation';
-import DeleteChessSpotButton from '../components/DeleteChessSpotButton';
-import EditChessSpotsForm from '../components/EditChessSpotsForm';
-import EditButton from '../components/EditButton';
+import DeleteFishButton from '../components/DeleteFishButton';
+import EditFishButton from '../components/EditFishButton';
 
 function Details() {
-    const chessSpot = useLoaderData();
-    const fallbackImage = 'https://png.pngtree.com/thumb_back/fh260/background/20221005/pngtree-simple-chess-board-with-pawn-pawn-strategy-game-chess-game-photo-image_34085610.jpg'; // Vervang dit door de URL van je standaardafbeelding
-    const handleImageError = (e) => {
-        e.target.src = fallbackImage; // Stelt de afbeelding in op de fallback als de afbeelding niet wordt geladen
-    };
+    const fish = useLoaderData();
 
     return (
-        <article className="p-6 bg-white rounded-lg shadow-md border border-gray-200 hover:shadow-xl transition-shadow flex flex-col gap-4">
-            <h1 className="text-2xl font-bold text-gray-800 mb-2">{chessSpot.title}</h1>
+        <>
+            <article className="p-6 bg-gradient-to-b from-blue-300 to-blue-600 text-white rounded-lg shadow-lg border border-blue-400 hover:shadow-2xl transition-shadow flex flex-col gap-4 max-w-2xl mx-auto h-full">
+                <div className="flex items-start justify-between gap-4">
+                    <div>
+                        <h1 className="text-4xl font-semibold">{fish.name}</h1>
+                        <h3 className="text-xl italic">{fish.scientificName}</h3>
+                        <p className="text-white">{fish.description}</p>
+                    </div>
+                    {fish.imageUrl === "" ? (
+                        <img src="https://www.nwf.org/-/media/NEW-WEBSITE/Shared-Folder/Wildlife/Fish/fish-placeholder.jpg" alt={fish.name} className="rounded-lg shadow-lg border border-blue-400 w-82 h-64 object-cover" />
+                    ) : (
+                        <img src={fish.imageUrl} alt={fish.name} className="rounded-lg shadow-lg border border-blue-400 w-82 h-64 object-cover" />
+                    )}
+                </div>
 
-            {chessSpot.imageUrl ? (
-                <img
-                    src={chessSpot.imageUrl}
-                    alt={chessSpot.title}
-                    className="w-full h-48 object-cover rounded-md mb-4"
-                    onError={handleImageError} // Als de afbeelding niet beschikbaar is, gebruik dan de fallback
-                />
-            ) : (
-                <img
-                    src={fallbackImage}
-                    alt="Fallback image"
-                    className="w-full h-48 object-cover rounded-md mb-4"
-                />
-            )}
-            <p className="text-gray-600 mb-4">{chessSpot.description}</p>
-            <p className="text-gray-500 italic">{chessSpot.review}</p>
+                <ul className="list-disc pl-5 space-y-2">
+                    {fish.funFacts.map((fact, index) => (
+                        <li key={index} className="text-sm">{fact}</li>
+                    ))}
+                </ul>
 
-            <div className="rounded-lg overflow-hidden border-b border-gray-200">
-                <MapWithLocation loc={chessSpot.loc} />
-            </div>
-            <DeleteChessSpotButton id={chessSpot.id} />
-            <EditButton id={chessSpot.id} />
-        </article >
+                <div className="bg-teal-500 rounded-lg p-4 pt-0">
+                    <h3 className="text-xl font-semibold p-1">Locatie: {fish.loc.point}</h3>
+
+                    <div className="rounded-lg overflow-hidden border-b border-gray-200">
+                        <MapWithLocation loc={fish.loc} />
+                    </div>
+                </div>
+
+                <div className="buttons flex justify-center gap-4 mt-4">
+                    <DeleteFishButton id={fish.id} />
+                    <EditFishButton id={fish.id} />
+                </div>
+
+            </article>
+        </>
+
     );
 }
 
-export default Details
+export default Details;
