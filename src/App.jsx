@@ -9,7 +9,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 const router = createBrowserRouter([
   {
     element: <Layout />,
-    errorElement: <ErrorBoundary />, // Voeg ErrorBoundary toe aan het layout niveau
+    errorElement: <ErrorBoundary />,
     children: [
       {
         path: '/',
